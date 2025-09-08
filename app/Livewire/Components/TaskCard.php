@@ -9,27 +9,35 @@ use Livewire\Component;
 
 class TaskCard extends Component
 {
+    //integer
     public $id;
-    public $content;
-    public $tag;
-    public $category;
+    //string
+    public $title, $content;
+    // public $content;
+    public $priority;
+    public $due_date = null;
+    public $category_id = null;
+    public $category = null;
     public $is_edit = false;
     public $is_success = false;
 
     protected $rules = [
-        'content' => 'required',
+        'title' => 'required|string',
     ];
 
     protected $messages = [
-        'content.required' => 'Task harus diisi',
+        'title.string' => 'Judul harus berupa teks',
     ];
 
     public function mount($task)
     {
         $this->id = $task->id;
-        $this->content = $task->content;
-        $this->tag = $task->tag->name;
+        $this->title = $task->title;
+        $this->is_success = $task->is_success;
+        $this->priority = $task->priority;
+        $this->category_id = $task->category_id;
         $this->category = $task->category;
+        $this->due_date = $task->due_date;
     }
 
     public function updated()
@@ -41,7 +49,7 @@ class TaskCard extends Component
     {
         $this->is_edit = false;
         $task = Task::find($this->id);
-        $task->status = 'done';
+        $task->is_success = $this->is_success;
         $task->save();
         $this->dispatch('notify', variant: 'success', message: 'Task Selesai');
         $this->dispatch('task-updated');
@@ -51,7 +59,7 @@ class TaskCard extends Component
     {
         $this->validate();
         $task = Task::find($this->id);
-        $task->content = $this->content;
+        $task->title = $this->title;
         $task->save();
         $this->is_edit = false;
         $this->dispatch('notify', variant: 'success', message: 'Task berhasil diupdate');
@@ -60,6 +68,12 @@ class TaskCard extends Component
     public function handleEdit()
     {
         $this->is_edit = !$this->is_edit;
+    }
+
+    public function detailTask($id)
+    {
+        Flux::modal('modal-detail-task')->show();
+        $this->dispatch('detail-task', id: $id);
     }
 
     public function confirmDelete($id)

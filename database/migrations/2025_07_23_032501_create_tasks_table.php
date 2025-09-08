@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
-            $table->enum('category', ['hight', 'medium', 'low']);
-            $table->enum('status', ['todo', 'doing', 'done'])->default('todo');
+            $table->string('title');
+            $table->string('content')->nullable();
+            $table->date('due_date')->nullable();
+            $table->boolean('is_success')->default(false);
+            $table->enum('priority', ['high', 'medium', 'low']);
             $table->timestamps();
         });
     }

@@ -13,10 +13,10 @@
             <flux:spacer />
 
             <flux:modal.close>
-                <flux:button variant="ghost">Batal</flux:button>
+                <flux:button variant="outline">Batal</flux:button>
             </flux:modal.close>
 
-            <flux:button wire:click="delete" variant="danger">Hapus Task</flux:button>
+            <flux:button wire:click="delete" variant="danger">Hapus</flux:button>
         </div>
     </div>
 </flux:modal>

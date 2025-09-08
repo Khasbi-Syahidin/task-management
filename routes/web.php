@@ -7,12 +7,8 @@ use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('dashboard');
 })->name('home');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -25,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 
     // task route
 
-    Route::get('tasks', Task::class)->name('tasks');
 });
+Route::get('/', Task::class)->name('home');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
